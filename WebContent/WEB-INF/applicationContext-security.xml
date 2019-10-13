@@ -14,17 +14,20 @@
 
 		<intercept-url pattern="/cadastro/cad_permissao.jsf" access="hasAnyRole('ADMIN')" method="POST"/>
 		<intercept-url pattern="/resources/components/**" access="isAuthenticated() and hasAnyRole('USER')"/>
-		<intercept-url pattern="/resources/**" access="isAuthenticated() and hasAnyRole('USER')"/>
-		<intercept-url pattern="/restrito/**" access="isAuthenticated() and hasAnyRole('USER')"/>
+		<intercept-url pattern="/resources/**" access="isAuthenticated() and hasAnyRole('ADMIN','USER')"/>
+		<intercept-url pattern="/restrito/**" access="isAuthenticated() and hasAnyRole('ADMIN','USER')"/>
 		<intercept-url pattern="/error/**" access="isAnonymous() or isAuthenticated() or !isAuthenticated()"/>
 		<intercept-url pattern="/templates/**" access="isAuthenticated() and hasAnyRole('USER')"/>
 		<intercept-url pattern="/cadastro/**" access="isAuthenticated() and hasAnyRole('USER')"/>
 		<intercept-url pattern="/publico/**" access="permitAll" /> 
 		<intercept-url pattern="/teste/**" access="permitAll" /> 
 		
-		<form-login login-page="/publico/login.jsf"
-			always-use-default-target="true" default-target-url="/restrito/principal.jsf"
-			authentication-failure-url="/publico/login.jsf?login_error=1" />
+		
+			
+		<form-login login-page="/publico/login.jsf" 
+		always-use-default-target="true" default-target-url="/restrito/principal.jsf"
+		authentication-failure-url="/publico/login.jsf?login_error=1"/>	
+			
 
 		<logout invalidate-session="true" logout-success-url="/publico/login.jsf"
 			logout-url="/j_spring_security_logout" delete-cookies="JSESSIONID"/>
@@ -46,19 +49,19 @@
 			<password-encoder hash="plaintext" />
 			<jdbc-user-service data-source-ref="springDataSource"
 
-				users-by-username-query="SELECT ent_login as username
-												,ent_senha as password
+				users-by-username-query="SELECT login as username
+				                         	,senha as password
 												,'true' as enable
-									   		FROM entidade 
-									   	   WHERE ent_inativo = false 
-									         and upper(ent_login) = upper(?)"
+									   		FROM usuario 
+									   	   WHERE inativo = false 
+									         and upper(login) = upper(?)"
 
 				authorities-by-username-query="SELECT u.ent_login as username
-													 ,p.esa_codigo as authority 
-											 	FROM entidade u 
-											  	join entidadeacesso p on u.ent_codigo = p.ent_codigo 
-											   WHERE u.ent_inativo = false
-											     AND upper(u.ent_login) = upper(?)" />
+													 ,p.codigo as authority 
+											 	FROM usuario u 
+											  	join usuarioacesso p on u.codigo = p.codigo 
+											   WHERE u.inativo = false
+											     AND upper(u.login) = upper(?)" />
 		</authentication-provider>
 	</authentication-manager>
 
