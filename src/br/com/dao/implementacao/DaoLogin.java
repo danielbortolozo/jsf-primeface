@@ -7,8 +7,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import br.com.framework.implementacao.crud.ImplementacaoCrud;
 import br.com.repository.interfaces.RepositoryLogin;
 
-public class DaoLogin extends ImplementacaoCrud<Object> implements
-		RepositoryLogin {
+public class DaoLogin extends ImplementacaoCrud<Object> implements	RepositoryLogin {
 	private static final long serialVersionUID = 1L;
 
 	@Override

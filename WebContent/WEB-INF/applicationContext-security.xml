@@ -11,11 +11,12 @@
 	<http auto-config="true" 
 		access-denied-page="/error/acessoNegado.jsf"
 		use-expressions="true">
+        <intercept-url access="IS_AUTHENTICATED_ANONYMOUSLY" pattern="/acessoNegado.jsf"/>		
 
 		<intercept-url pattern="/cadastro/cad_permissao.jsf" access="hasAnyRole('ADMIN')" method="POST"/>
 		<intercept-url pattern="/resources/components/**" access="isAuthenticated() and hasAnyRole('USER')"/>
-		<intercept-url pattern="/resources/**" access="isAuthenticated() and hasAnyRole('ADMIN','USER')"/>
-		<intercept-url pattern="/restrito/**" access="isAuthenticated() and hasAnyRole('ADMIN','USER')"/>
+		<intercept-url pattern="/resources/**" access="isAuthenticated() and hasAnyRole('USER')"/>
+		<intercept-url pattern="/restrito/**" access="isAuthenticated() and hasAnyRole('USER')"/>
 		<intercept-url pattern="/error/**" access="isAnonymous() or isAuthenticated() or !isAuthenticated()"/>
 		<intercept-url pattern="/templates/**" access="isAuthenticated() and hasAnyRole('USER')"/>
 		<intercept-url pattern="/cadastro/**" access="isAuthenticated() and hasAnyRole('USER')"/>
@@ -56,7 +57,7 @@
 									   	   WHERE inativo = false 
 									         and upper(login) = upper(?)"
 
-				authorities-by-username-query="SELECT u.ent_login as username
+				authorities-by-username-query="SELECT u.login as username
 													 ,p.codigo as authority 
 											 	FROM usuario u 
 											  	join usuarioacesso p on u.codigo = p.codigo 
